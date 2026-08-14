@@ -1,0 +1,61 @@
+spring:
+  datasource:
+    url: jdbc:${DEV_DB_JDBC:postgresql}://${DEV_DB_HOST:localhost}:${DEV_DB_PORT:5432}/${DEV_DB_NAME:cars_service}
+    username: ${DEV_DB_USERNAME:postgres}
+    password: ${DEV_DB_PASSWORD:root123}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 5                                       # Kamida nechta ulanish bo'sh bo'lishi kerakligi.
+      maximum-pool-size: 10                                 # Poolda nechta maksimal ulanish bo'lishi mumkinligi.
+      idle-timeout: 30000                                   # Ulash bo'sh holatda qancha vaqt tursa, yo'q qilinishidan oldin (millisekundlarda).
+      max-lifetime: 1800000                                 # Ulanishning maksimal umri (millisekundlarda)
+      connection-timeout: 30000                             # Ulanish uchun qancha vaqt kutish kerakligi (millisekundlarda).
+      pool-name: MyHikariCP                                 # Ulanish pooli nomi.
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true   # JSON chiqishini formatlash (qurilmani o'qish oson bo'lishi uchun)
+  cache:
+    type: none              # Kesh mexanizmi, "none" - kesh ishlatilmasin, agar kerak bo'lsa redis, caffeine kabi keshlardan foydalanish mumkin
+  sql:
+    init:
+      encoding: UTF-8
+#      mode: embedded     # schema.sql avotmotic ishga tushadi
+#      schema-locations:
+#      - classpath*:db/migration/V001__schema.sql
+#      data-locations:
+#      - classpath*:db/migration/V002__data.sql
+#  kafka:
+#    bootstrap-servers: 89.126.209.31:9092
+
+
+# Auth In Memory
+auth:
+  users:
+    - username: ${AUTH_MAIN_GATEWAY_USER:gateway-user}
+      password: ${AUTH_MAIN_GATEWAY_PASS:cREFrOZoNhancReCToMAdyNchACHer}
+      role: HIDE
+
+
+internal:
+  user:
+    url: ${INT_USER_SERVICE_URL:http://localhost:10013}
+    username: ${INT_USER_SERVICE_USERNAME:gateway-user}
+    password: ${INT_USER_SERVICE_PASSWORD:cOnENTIOneydroTaGnbEStrOgaradE}
+  notify:
+    url: ${INT_USER_SERVICE_URL:http://localhost:10008}
+    username: ${INT_USER_SERVICE_USERNAME:gateway-user}
+    password: ${INT_USER_SERVICE_PASSWORD:ripsOmBEarBalENISGuidElijORiUM}
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
