@@ -1,0 +1,26 @@
+package uz.taxi.cars_service.rest.payload.res.typeofservice;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Getter
+@Setter
+public class TypeOfServiceResponse {
+
+    private UUID id;
+
+    private String name;
+
+    private String description;
+
+    private String attachmentPath;
+
+    private String status;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+}
