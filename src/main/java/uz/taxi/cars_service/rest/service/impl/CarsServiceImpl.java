@@ -32,9 +32,33 @@ public class CarsServiceImpl implements CarsService {
     private final CarsRepository repository;
 
     @Override
+    public GenericResponse<?> getPage(String filter, UUID driverId, int page, int size) {
+        String normalizedFilter = normalizeFilter(filter);
+
+        Page<Cars> entities = repository.findAllByFilter(
+                normalizedFilter,
+                driverId,
+                PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"))
+        );
+
+        List<CarsResponse> list = entities.getContent().stream()
+                .map(this::toResponse)
+                .toList();
+
+        ResPageable resPageable = ResPageable.builder()
+                .object(list)
+                .totalPage(entities.getTotalPages())
+                .page(page)
+                .size(size)
+                .totalElements(entities.getTotalElements())
+                .build();
+
+        return GenericResponse.success(Messages.SUCCESS, resPageable);
+    }
+
+    @Override
     public GenericResponse<?> create(CarsRequest request) {
         Cars entity = new Cars();
-        entity.setId(request.getId());
         entity.setDriverId(request.getDriverId());
         entity.setFirstName(request.getFirstName());
         entity.setLastName(request.getLastName());
@@ -98,31 +122,6 @@ public class CarsServiceImpl implements CarsService {
                 .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
 
         return GenericResponse.success(Messages.SUCCESS, toResponse(entity));
-    }
-
-    @Override
-    public GenericResponse<?> getPage(String filter, UUID driverId, int page, int size) {
-        String normalizedFilter = normalizeFilter(filter);
-
-        Page<Cars> entities = repository.findAllByFilter(
-                normalizedFilter,
-                driverId,
-                PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"))
-        );
-
-        List<CarsResponse> list = entities.getContent().stream()
-                .map(this::toResponse)
-                .toList();
-
-        ResPageable resPageable = ResPageable.builder()
-                .object(list)
-                .totalPage(entities.getTotalPages())
-                .page(page)
-                .size(size)
-                .totalElements(entities.getTotalElements())
-                .build();
-
-        return GenericResponse.success(Messages.SUCCESS, resPageable);
     }
 
     @Override

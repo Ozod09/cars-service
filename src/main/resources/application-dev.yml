@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:${DEV_DB_JDBC:postgresql}://${DEV_DB_HOST:localhost}:${DEV_DB_PORT:5432}/${DEV_DB_NAME:cars_service}
     username: ${DEV_DB_USERNAME:postgres}
-    password: ${DEV_DB_PASSWORD:root123}
+    password: ${DEV_DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
     hikari:
       minimum-idle: 5                                       # Kamida nechta ulanish bo'sh bo'lishi kerakligi.
@@ -13,7 +13,7 @@ spring:
       pool-name: MyHikariCP                                 # Ulanish pooli nomi.
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -38,7 +38,7 @@ spring:
 auth:
   users:
     - username: ${AUTH_MAIN_GATEWAY_USER:gateway-user}
-      password: ${AUTH_MAIN_GATEWAY_PASS:cREFrOZoNhancReCToMAdyNchACHer}
+      password: ${AUTH_MAIN_GATEWAY_PASS:ripsOmBEarBalENISGuidElijORiUM}
       role: HIDE
 
 
@@ -47,10 +47,6 @@ internal:
     url: ${INT_USER_SERVICE_URL:http://localhost:10013}
     username: ${INT_USER_SERVICE_USERNAME:gateway-user}
     password: ${INT_USER_SERVICE_PASSWORD:cOnENTIOneydroTaGnbEStrOgaradE}
-  notify:
-    url: ${INT_USER_SERVICE_URL:http://localhost:10008}
-    username: ${INT_USER_SERVICE_USERNAME:gateway-user}
-    password: ${INT_USER_SERVICE_PASSWORD:ripsOmBEarBalENISGuidElijORiUM}
 
 springdoc:
   swagger-ui:
