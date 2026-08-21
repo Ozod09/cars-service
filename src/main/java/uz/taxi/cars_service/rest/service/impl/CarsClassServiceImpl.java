@@ -12,6 +12,7 @@ import uz.taxi.cars_service.entity.CarsClass;
 import uz.taxi.cars_service.entity.TypeOfService;
 import uz.taxi.cars_service.enums.CarsCategoryStatusEnum;
 import uz.taxi.cars_service.exception.BadRequestException;
+import uz.taxi.cars_service.exception.CustomNotFoundException;
 import uz.taxi.cars_service.repository.CarsClassRepository;
 import uz.taxi.cars_service.repository.TypeOfServiceRepository;
 import uz.taxi.cars_service.rest.payload.req.carsClass.CarsClassRequest;
@@ -33,6 +34,7 @@ public class CarsClassServiceImpl implements CarsClassService {
 
     @Override
     public GenericResponse<?> create(CarsClassRequest request) {
+
         TypeOfService typeOfService = typeOfServiceRepository.findById(request.getTypeOfServiceId())
                 .orElseThrow(() -> new BadRequestException("Type of service not found"));
 
@@ -79,8 +81,9 @@ public class CarsClassServiceImpl implements CarsClassService {
 
     @Override
     public GenericResponse<?> get(UUID id) {
+
         CarsClass entity = repository.findById(id)
-                .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Messages.TARIFF_NOT_FOUND));
 
         return GenericResponse.success(Messages.SUCCESS, toResponse(entity));
     }

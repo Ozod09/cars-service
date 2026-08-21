@@ -20,6 +20,7 @@ public interface Messages {
     String USER_ALREADY_EXISTS = "Foydalanuvchi allaqachon ma’lumotlar bazasida mavjud";
     String USER_SUCCESSFULLY_REGISTERED = "Foydalanuvchi muvaffaqiyatli ro’yxatdan o’tdi";
     String DATA_NOT_FOUND = "Maʼlumotlar topilmadi";
+    String TARIFF_NOT_FOUND = "Tariff topilmaid";
     String PHONE_ALREADY_EXISTS = "Bu telefon raqami allaqachon ro’yxatdan o’tgan";
 
     // Code verification messages
