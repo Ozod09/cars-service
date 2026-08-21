@@ -12,6 +12,7 @@ import uz.taxi.cars_service.entity.Cars;
 import uz.taxi.cars_service.enums.BrentStatusEnum;
 import uz.taxi.cars_service.enums.CarsStatusEnum;
 import uz.taxi.cars_service.exception.BadRequestException;
+import uz.taxi.cars_service.exception.CustomNotFoundException;
 import uz.taxi.cars_service.repository.CarsRepository;
 import uz.taxi.cars_service.rest.payload.req.cars.BrantCarsRequest;
 import uz.taxi.cars_service.rest.payload.req.cars.CarsRequest;
@@ -33,6 +34,7 @@ public class CarsServiceImpl implements CarsService {
 
     @Override
     public GenericResponse<?> getPage(String filter, UUID driverId, int page, int size) {
+
         String normalizedFilter = normalizeFilter(filter);
 
         Page<Cars> entities = repository.findAllByFilter(
@@ -58,6 +60,7 @@ public class CarsServiceImpl implements CarsService {
 
     @Override
     public GenericResponse<?> create(CarsRequest request) {
+
         Cars entity = new Cars();
         entity.setDriverId(request.getDriverId());
         entity.setFirstName(request.getFirstName());
@@ -77,8 +80,9 @@ public class CarsServiceImpl implements CarsService {
 
     @Override
     public GenericResponse<?> edit(UUID id, CarsRequest request) {
+
         Cars entity = repository.findById(id)
-                .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Messages.DATA_NOT_FOUND));
 
         entity.setDriverId(request.getDriverId());
         entity.setFirstName(request.getFirstName());
@@ -97,8 +101,9 @@ public class CarsServiceImpl implements CarsService {
 
     @Override
     public GenericResponse<?> editBrent(UUID id, BrantCarsRequest request) {
+
         Cars entity = repository.findById(id)
-                .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Messages.DATA_NOT_FOUND));
 
         entity.setBrentStatus(BrentStatusEnum.UNCONFIRMED);
         entity.setBrentCarsTakePhotoPaths(request.getBrentCarsTakePhotoPaths());
@@ -110,24 +115,27 @@ public class CarsServiceImpl implements CarsService {
 
     @Override
     public GenericResponse<?> get(UUID id) {
+
         Cars entity = repository.findById(id)
-                .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Messages.DATA_NOT_FOUND));
 
         return GenericResponse.success(Messages.SUCCESS, toResponse(entity));
     }
 
     @Override
     public GenericResponse<?> getByDriverId(UUID driverId) {
+
         Cars entity = repository.findByDriverId(driverId)
-                .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Messages.DATA_NOT_FOUND));
 
         return GenericResponse.success(Messages.SUCCESS, toResponse(entity));
     }
 
     @Override
     public GenericResponse<?> editStatus(UUID id, String status) {
+
         Cars entity = repository.findById(id)
-                .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Messages.DATA_NOT_FOUND));
 
         try {
             CarsStatusEnum statusEnum = CarsStatusEnum.valueOf(status);
@@ -142,8 +150,9 @@ public class CarsServiceImpl implements CarsService {
 
     @Override
     public GenericResponse<?> editBrentStatus(UUID id, String brentStatus) {
+
         Cars entity = repository.findById(id)
-                .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Messages.DATA_NOT_FOUND));
 
         try {
             BrentStatusEnum brentStatusEnum = BrentStatusEnum.valueOf(brentStatus);
@@ -158,8 +167,9 @@ public class CarsServiceImpl implements CarsService {
 
     @Override
     public GenericResponse<?> delete(UUID id) {
+
         Cars entity = repository.findById(id)
-                .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Messages.DATA_NOT_FOUND));
 
         entity.setStatus(CarsStatusEnum.DELETED);
         entity.setUpdatedAt(LocalDateTime.now());
@@ -169,6 +179,7 @@ public class CarsServiceImpl implements CarsService {
     }
 
     private CarsResponse toResponse(Cars entity) {
+
         CarsResponse response = new CarsResponse();
         response.setId(entity.getId());
         response.setDriverId(entity.getDriverId());

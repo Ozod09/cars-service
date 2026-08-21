@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:${DEV_DB_JDBC:postgresql}://${DEV_DB_HOST:89.126.209.31}:${DEV_DB_PORT:5432}/${DEV_DB_NAME:user_service}
+    url: jdbc:${DEV_DB_JDBC:postgresql}://${DEV_DB_HOST:db}:${DEV_DB_PORT:5432}/${DEV_DB_NAME:cars_db}
     username: ${DEV_DB_USERNAME:postgres}
-    password: ${DEV_DB_PASSWORD:root123}
+    password: ${DEV_DB_PASSWORD:omvyCykUBSIZQZjsGWeg}
     driver-class-name: org.postgresql.Driver
     hikari:
       minimum-idle: 5                                       # Kamida nechta ulanish bo'sh bo'lishi kerakligi.
@@ -11,6 +11,12 @@ spring:
       max-lifetime: 1800000                                 # Ulanishning maksimal umri (millisekundlarda)
       connection-timeout: 30000                             # Ulanish uchun qancha vaqt kutish kerakligi (millisekundlarda).
       pool-name: MyHikariCP                                 # Ulanish pooli nomi.
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   jackson:
     serialization:
       INDENT_OUTPUT: true   # JSON chiqishini formatlash (qurilmani o'qish oson bo'lishi uchun)
@@ -19,20 +25,20 @@ spring:
   sql:
     init:
       encoding: UTF-8
-      mode: embedded     # schema.sql avotmotic ishga tushadi
-      schema-locations:
-      - classpath*:db/migration/V001__schema.sql
-      data-locations:
-      - classpath*:db/migration/V002__data.sql
-  kafka:
-    bootstrap-servers: 89.126.209.31:9092
+#      mode: embedded     # schema.sql avotmotic ishga tushadi
+#      schema-locations:
+#      - classpath*:db/migration/V001__schema.sql
+#      data-locations:
+#      - classpath*:db/migration/V002__data.sql
+#  kafka:
+#    bootstrap-servers: 89.126.209.31:9092
 
 
 # Auth In Memory
 auth:
   users:
     - username: ${AUTH_MAIN_GATEWAY_USER:gateway-user}
-      password: ${AUTH_MAIN_GATEWAY_PASS:cREFrOZoNhancReCToMAdyNchACHer}
+      password: ${AUTH_MAIN_GATEWAY_PASS:DuGhtfOChosBreSidiCApHEadeSTIO}
       role: HIDE
 
 
