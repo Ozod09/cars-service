@@ -14,9 +14,9 @@ import uz.taxi.cars_service.enums.CarsCategoryStatusEnum;
 import uz.taxi.cars_service.exception.BadRequestException;
 import uz.taxi.cars_service.repository.CarsClassRepository;
 import uz.taxi.cars_service.repository.TypeOfServiceRepository;
-import uz.taxi.cars_service.rest.payload.req.carsclass.CarsClassRequest;
+import uz.taxi.cars_service.rest.payload.req.carsClass.CarsClassRequest;
 import uz.taxi.cars_service.rest.payload.res.ResPageable;
-import uz.taxi.cars_service.rest.payload.res.carsclass.CarsClassResponse;
+import uz.taxi.cars_service.rest.payload.res.carsClass.CarsClassResponse;
 import uz.taxi.cars_service.rest.service.CarsClassService;
 
 import java.time.LocalDateTime;
@@ -41,7 +41,8 @@ public class CarsClassServiceImpl implements CarsClassService {
         entity.setName(request.getName());
         entity.setDescription(request.getDescription());
         entity.setStartPrice(request.getStartPrice());
-        entity.setOneKmPrice(request.getOneKmPrice());
+        entity.setKmPrice(request.getKmPrice());
+        entity.setTwoKmPrice(request.getTwoKmPrice());
         entity.setDaytimePrice(request.getDaytimePrice());
         entity.setEveningPrice(request.getEveningPrice());
         entity.setPaidWaitingTime(request.getPaidWaitingTime());
@@ -64,7 +65,8 @@ public class CarsClassServiceImpl implements CarsClassService {
         entity.setName(request.getName());
         entity.setDescription(request.getDescription());
         entity.setStartPrice(request.getStartPrice());
-        entity.setOneKmPrice(request.getOneKmPrice());
+        entity.setKmPrice(request.getKmPrice());
+        entity.setTwoKmPrice(request.getTwoKmPrice());
         entity.setDaytimePrice(request.getDaytimePrice());
         entity.setEveningPrice(request.getEveningPrice());
         entity.setPaidWaitingTime(request.getPaidWaitingTime());
@@ -143,7 +145,8 @@ public class CarsClassServiceImpl implements CarsClassService {
         response.setName(entity.getName());
         response.setDescription(entity.getDescription());
         response.setStartPrice(entity.getStartPrice());
-        response.setOneKmPrice(entity.getOneKmPrice());
+        response.setKmPrice(entity.getKmPrice());
+        response.setTwoKmPrice(entity.getTwoKmPrice());
         response.setDaytimePrice(entity.getDaytimePrice());
         response.setEveningPrice(entity.getEveningPrice());
         response.setPaidWaitingTime(entity.getPaidWaitingTime());
