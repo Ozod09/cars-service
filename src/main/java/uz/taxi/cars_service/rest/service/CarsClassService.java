@@ -1,7 +1,7 @@
 package uz.taxi.cars_service.rest.service;
 
 import uz.taxi.cars_service.common.GenericResponse;
-import uz.taxi.cars_service.rest.payload.req.carsclass.CarsClassRequest;
+import uz.taxi.cars_service.rest.payload.req.carsClass.CarsClassRequest;
 
 import java.util.UUID;
 

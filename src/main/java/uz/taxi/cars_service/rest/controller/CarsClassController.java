@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uz.taxi.cars_service.base.BaseURL;
-import uz.taxi.cars_service.rest.payload.req.carsclass.CarsClassRequest;
+import uz.taxi.cars_service.rest.payload.req.carsClass.CarsClassRequest;
 import uz.taxi.cars_service.rest.service.CarsClassService;
 
 import java.util.UUID;

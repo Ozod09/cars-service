@@ -1,4 +1,4 @@
-package uz.taxi.cars_service.rest.payload.req.carsclass;
+package uz.taxi.cars_service.rest.payload.req.carsClass;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +21,9 @@ public class CarsClassRequest {
 
     private Double startPrice;
 
-    private Double oneKmPrice;
+    private Double kmPrice;
+
+    private Double twoKmPrice;
 
     private Double daytimePrice;
 

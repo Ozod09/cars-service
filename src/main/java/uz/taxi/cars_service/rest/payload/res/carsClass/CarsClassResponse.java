@@ -1,4 +1,4 @@
-package uz.taxi.cars_service.rest.payload.res.carsclass;
+package uz.taxi.cars_service.rest.payload.res.carsClass;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +22,9 @@ public class CarsClassResponse {
 
     private Double startPrice;
 
-    private Double oneKmPrice;
+    private Double kmPrice;
+
+    private Double twoKmPrice;
 
     private Double daytimePrice;
 
