@@ -38,7 +38,7 @@ spring:
 auth:
   users:
     - username: ${AUTH_MAIN_GATEWAY_USER:gateway-user}
-      password: ${AUTH_MAIN_GATEWAY_PASS:ripsOmBEarBalENISGuidElijORiUM}
+      password: ${AUTH_MAIN_GATEWAY_PASS:DuGhtfOChosBreSidiCApHEadeSTIO}
       role: HIDE
 
 
@@ -47,11 +47,3 @@ internal:
     url: ${INT_USER_SERVICE_URL:http://localhost:10013}
     username: ${INT_USER_SERVICE_USERNAME:gateway-user}
     password: ${INT_USER_SERVICE_PASSWORD:cOnENTIOneydroTaGnbEStrOgaradE}
-
-springdoc:
-  swagger-ui:
-    enabled: true
-    path: /swagger-ui.html
-  api-docs:
-    enabled: true
-    path: /v3/api-docs
