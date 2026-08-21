@@ -6,7 +6,7 @@ spring:
     name: cars-service
   profiles:
     active:
-    - prod
+    - dev
 
 
 springdoc:
