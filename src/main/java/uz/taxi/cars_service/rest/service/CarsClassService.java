@@ -15,6 +15,8 @@ public interface CarsClassService {
 
     GenericResponse<?> getPage(String filter, UUID typeOfServiceId, int page, int size);
 
+    GenericResponse<?> getList(UUID typeOfServiceId, String filter);
+
     GenericResponse<?> editStatus(UUID id, String status);
 
     GenericResponse<?> delete(UUID id);

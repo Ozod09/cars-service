@@ -34,8 +34,6 @@ public class CarsClass extends BaseEntity {
 
     private Double kmPrice;
 
-    private Double daytimePrice;
-
     private Double eveningPrice;
 
     private Double paidWaitingTime;

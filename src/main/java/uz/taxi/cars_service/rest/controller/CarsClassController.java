@@ -46,6 +46,14 @@ public class CarsClassController {
         return ResponseEntity.ok(service.getPage(filter, typeOfServiceId, page, size));
     }
 
+    @GetMapping(BaseURL.LIST)
+    public ResponseEntity<?> getList(
+            @RequestParam(required = false) String filter,
+            @RequestParam(required = false) UUID typeOfServiceId
+    ) {
+        return ResponseEntity.ok(service.getList(typeOfServiceId, filter));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> edit(
             @PathVariable UUID id,

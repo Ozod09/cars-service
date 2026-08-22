@@ -26,8 +26,6 @@ public class CarsClassResponse {
 
     private Double twoKmPrice;
 
-    private Double daytimePrice;
-
     private Double eveningPrice;
 
     private Double paidWaitingTime;

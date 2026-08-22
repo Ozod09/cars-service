@@ -15,6 +15,8 @@ public interface TypeOfServiceService {
 
     GenericResponse<?> getPage(UUID regionId, String filter, int page, int size);
 
+    GenericResponse<?> getList(UUID regionId, String filter);
+
     GenericResponse<?> editStatus(UUID id, String status);
 
     GenericResponse<?> delete(UUID id);

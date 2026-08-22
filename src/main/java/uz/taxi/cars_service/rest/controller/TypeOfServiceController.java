@@ -46,6 +46,14 @@ public class TypeOfServiceController {
         return ResponseEntity.ok(service.getPage(regionId, filter, page, size));
     }
 
+    @GetMapping(BaseURL.LIST)
+    public ResponseEntity<?> getList(
+            @RequestParam UUID regionId,
+            @RequestParam(required = false) String filter
+    ) {
+        return ResponseEntity.ok(service.getList(regionId, filter));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> edit(
             @PathVariable UUID id,
