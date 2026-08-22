@@ -34,6 +34,7 @@ public class CarsClassServiceImpl implements CarsClassService {
 
     @Override
     public GenericResponse<?> create(CarsClassRequest request) {
+
         TypeOfService typeOfService = typeOfServiceRepository.findById(request.getTypeOfServiceId())
                 .orElseThrow(() -> new CustomNotFoundException(Messages.TYPE_SERVICE_NOT_FOUND));
 
@@ -78,8 +79,9 @@ public class CarsClassServiceImpl implements CarsClassService {
 
     @Override
     public GenericResponse<?> get(UUID id) {
+
         CarsClass entity = repository.findById(id)
-                .orElseThrow(() -> new CustomNotFoundException(Messages.CARCLASS_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Messages.TARIFF_NOT_FOUND));
 
         return GenericResponse.success(Messages.SUCCESS, toResponse(entity));
     }
