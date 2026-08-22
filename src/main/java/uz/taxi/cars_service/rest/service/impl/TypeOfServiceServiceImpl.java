@@ -90,6 +90,18 @@ public class TypeOfServiceServiceImpl implements TypeOfServiceService {
     }
 
     @Override
+    public GenericResponse<?> getList(UUID regionId, String filter) {
+        List<TypeOfService> allByFilter = repository.findAllByFilter(regionId, filter);
+
+        List<TypeOfServiceResponse> list = allByFilter.stream()
+                .map(this::toResponse)
+                .toList();
+
+
+        return GenericResponse.success(Messages.SUCCESS, list);
+    }
+
+    @Override
     public GenericResponse<?> editStatus(UUID id, String status) {
         TypeOfService entity = repository.findById(id)
                 .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));

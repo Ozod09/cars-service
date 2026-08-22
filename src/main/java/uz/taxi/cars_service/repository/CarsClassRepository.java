@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import uz.taxi.cars_service.entity.CarsClass;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -22,4 +23,14 @@ public interface CarsClassRepository extends JpaRepository<CarsClass, UUID> {
     Page<CarsClass> findAllByFilter(@Param("filter") String filter,
                                      @Param("typeOfServiceId") UUID typeOfServiceId,
                                      Pageable pageable);
+
+
+    @Query("""
+        SELECT c FROM CarsClass c
+        WHERE (:filter IS NULL OR :filter = ''
+           OR LOWER(c.name) LIKE LOWER(CONCAT('%', :filter, '%')))
+        AND (:typeOfServiceId IS NULL OR c.typeOfService.id = :typeOfServiceId)
+    """)
+    List<CarsClass> findAllByFilter(@Param("filter") String filter,
+                                    @Param("typeOfServiceId") UUID typeOfServiceId);
 }

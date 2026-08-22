@@ -4,21 +4,9 @@ public interface Messages {
     String SUCCESS = "success";
     String DELETED_SUCCESSFULLY = "Muvaffaqiyatli o’chirildi";
 
-    // Client messages
-    String CLIENT_ID_NOT_FOUND = "Client id yuborilmadi";
 
-    // Driver messages
-    String DRIVER_ID_NOT_FOUND = "Driver id yuborilmadi";
-    String DRIVER_NOT_FOUND = "Haydovchi topilmadi";
-    String PASSPORT_ALREADY_EXISTS = "Bu passport raqami allaqachon ro’yxatdan o’tgan";
-
-    // User messages
-    String VERIFICATION_STATUS_NOT_CORRECT = "Tasdiqlash holati toʻgʻri emas";
-    String USER_BLOCKED = "Foydalanuvchi bloklangan";
-    String INCORRECT_PASSWORD = "Noto’g’ri parol";
-    String USER_NOT_FOUND = "Foydalanuvchi topilmadi";
-    String USER_ALREADY_EXISTS = "Foydalanuvchi allaqachon ma’lumotlar bazasida mavjud";
-    String USER_SUCCESSFULLY_REGISTERED = "Foydalanuvchi muvaffaqiyatli ro’yxatdan o’tdi";
+    String TYPE_SERVICE_NOT_FOUND = "Type of service not found";
+    String CARCLASS_NOT_FOUND = "CarsClass topilmadi";
     String DATA_NOT_FOUND = "Maʼlumotlar topilmadi";
     String TARIFF_NOT_FOUND = "Tariff topilmaid";
     String PHONE_ALREADY_EXISTS = "Bu telefon raqami allaqachon ro’yxatdan o’tgan";

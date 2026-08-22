@@ -60,7 +60,8 @@ public class CarsServiceImpl implements CarsService {
 
     @Override
     public GenericResponse<?> create(CarsRequest request) {
-
+        List<UUID> objects = request.getCarsServiceIds() != null
+                ? request.getCarsServiceIds() : new ArrayList<>();
         Cars entity = new Cars();
         entity.setDriverId(request.getDriverId());
         entity.setFirstName(request.getFirstName());
@@ -70,7 +71,7 @@ public class CarsServiceImpl implements CarsService {
         entity.setModel(request.getModel());
         entity.setNumber(request.getNumber());
         entity.setTexPassportPhotoPath(request.getTexPassportPhotoPath());
-        entity.setCarsServiceIds(request.getCarsServiceIds() != null ? request.getCarsServiceIds() : new ArrayList<>());
+        entity.setCarsServiceIds(objects);
         entity.setStatus(CarsStatusEnum.UNCONFIRMED);
 
         Cars saved = repository.save(entity);

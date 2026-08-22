@@ -9,6 +9,7 @@ public interface BaseURL {
     String CARS = "/cars";
     String CLASS = "/class";
     String TYPEOFSERVICE = "/type-of-service";
+    String LIST = "/list";
 
 
     String BYDRIVER = "/by-driver";

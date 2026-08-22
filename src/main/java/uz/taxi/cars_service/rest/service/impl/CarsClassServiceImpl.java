@@ -36,7 +36,7 @@ public class CarsClassServiceImpl implements CarsClassService {
     public GenericResponse<?> create(CarsClassRequest request) {
 
         TypeOfService typeOfService = typeOfServiceRepository.findById(request.getTypeOfServiceId())
-                .orElseThrow(() -> new BadRequestException("Type of service not found"));
+                .orElseThrow(() -> new CustomNotFoundException(Messages.TYPE_SERVICE_NOT_FOUND));
 
         CarsClass entity = new CarsClass();
         entity.setTypeOfService(typeOfService);
@@ -45,7 +45,6 @@ public class CarsClassServiceImpl implements CarsClassService {
         entity.setStartPrice(request.getStartPrice());
         entity.setKmPrice(request.getKmPrice());
         entity.setTwoKmPrice(request.getTwoKmPrice());
-        entity.setDaytimePrice(request.getDaytimePrice());
         entity.setEveningPrice(request.getEveningPrice());
         entity.setPaidWaitingTime(request.getPaidWaitingTime());
         entity.setStatus(CarsCategoryStatusEnum.ACTIVE);
@@ -58,10 +57,10 @@ public class CarsClassServiceImpl implements CarsClassService {
     @Override
     public GenericResponse<?> edit(UUID id, CarsClassRequest request) {
         CarsClass entity = repository.findById(id)
-                .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Messages.CARCLASS_NOT_FOUND));
 
         TypeOfService typeOfService = typeOfServiceRepository.findById(request.getTypeOfServiceId())
-                .orElseThrow(() -> new BadRequestException("Type of service not found"));
+                .orElseThrow(() -> new CustomNotFoundException(Messages.TYPE_SERVICE_NOT_FOUND));
 
         entity.setTypeOfService(typeOfService);
         entity.setName(request.getName());
@@ -69,7 +68,6 @@ public class CarsClassServiceImpl implements CarsClassService {
         entity.setStartPrice(request.getStartPrice());
         entity.setKmPrice(request.getKmPrice());
         entity.setTwoKmPrice(request.getTwoKmPrice());
-        entity.setDaytimePrice(request.getDaytimePrice());
         entity.setEveningPrice(request.getEveningPrice());
         entity.setPaidWaitingTime(request.getPaidWaitingTime());
         entity.setUpdatedAt(LocalDateTime.now());
@@ -114,9 +112,20 @@ public class CarsClassServiceImpl implements CarsClassService {
     }
 
     @Override
+    public GenericResponse<?> getList(UUID typeOfServiceId, String filter) {
+        List<CarsClass> allByFilter = repository.findAllByFilter(filter, typeOfServiceId);
+
+        List<CarsClassResponse> list = allByFilter.stream()
+                .map(this::toResponse)
+                .toList();
+
+        return GenericResponse.success(Messages.SUCCESS, list);
+    }
+
+    @Override
     public GenericResponse<?> editStatus(UUID id, String status) {
         CarsClass entity = repository.findById(id)
-                .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Messages.CARCLASS_NOT_FOUND));
 
         try {
             CarsCategoryStatusEnum statusEnum = CarsCategoryStatusEnum.valueOf(status);
@@ -132,7 +141,7 @@ public class CarsClassServiceImpl implements CarsClassService {
     @Override
     public GenericResponse<?> delete(UUID id) {
         CarsClass entity = repository.findById(id)
-                .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Messages.CARCLASS_NOT_FOUND));
 
         entity.setStatus(CarsCategoryStatusEnum.DELETED);
         repository.save(entity);
@@ -150,7 +159,6 @@ public class CarsClassServiceImpl implements CarsClassService {
         response.setStartPrice(entity.getStartPrice());
         response.setKmPrice(entity.getKmPrice());
         response.setTwoKmPrice(entity.getTwoKmPrice());
-        response.setDaytimePrice(entity.getDaytimePrice());
         response.setEveningPrice(entity.getEveningPrice());
         response.setPaidWaitingTime(entity.getPaidWaitingTime());
         response.setStatus(entity.getStatus().name());
