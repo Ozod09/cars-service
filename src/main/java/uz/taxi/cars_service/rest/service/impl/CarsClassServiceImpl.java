@@ -33,51 +33,6 @@ public class CarsClassServiceImpl implements CarsClassService {
     private final TypeOfServiceRepository typeOfServiceRepository;
 
     @Override
-    public GenericResponse<?> create(CarsClassRequest request) {
-
-        TypeOfService typeOfService = typeOfServiceRepository.findById(request.getTypeOfServiceId())
-                .orElseThrow(() -> new CustomNotFoundException(Messages.TYPE_SERVICE_NOT_FOUND));
-
-        CarsClass entity = new CarsClass();
-        entity.setTypeOfService(typeOfService);
-        entity.setName(request.getName());
-        entity.setDescription(request.getDescription());
-        entity.setStartPrice(request.getStartPrice());
-        entity.setKmPrice(request.getKmPrice());
-        entity.setTwoKmPrice(request.getTwoKmPrice());
-        entity.setEveningPrice(request.getEveningPrice());
-        entity.setPaidWaitingTime(request.getPaidWaitingTime());
-        entity.setStatus(CarsCategoryStatusEnum.ACTIVE);
-
-        CarsClass saved = repository.save(entity);
-
-        return GenericResponse.success(Messages.SUCCESS, saved.getId());
-    }
-
-    @Override
-    public GenericResponse<?> edit(UUID id, CarsClassRequest request) {
-        CarsClass entity = repository.findById(id)
-                .orElseThrow(() -> new CustomNotFoundException(Messages.CARCLASS_NOT_FOUND));
-
-        TypeOfService typeOfService = typeOfServiceRepository.findById(request.getTypeOfServiceId())
-                .orElseThrow(() -> new CustomNotFoundException(Messages.TYPE_SERVICE_NOT_FOUND));
-
-        entity.setTypeOfService(typeOfService);
-        entity.setName(request.getName());
-        entity.setDescription(request.getDescription());
-        entity.setStartPrice(request.getStartPrice());
-        entity.setKmPrice(request.getKmPrice());
-        entity.setTwoKmPrice(request.getTwoKmPrice());
-        entity.setEveningPrice(request.getEveningPrice());
-        entity.setPaidWaitingTime(request.getPaidWaitingTime());
-        entity.setUpdatedAt(LocalDateTime.now());
-
-        CarsClass saved = repository.save(entity);
-
-        return GenericResponse.success(Messages.SUCCESS, saved.getId());
-    }
-
-    @Override
     public GenericResponse<?> get(UUID id) {
 
         CarsClass entity = repository.findById(id)
@@ -88,6 +43,7 @@ public class CarsClassServiceImpl implements CarsClassService {
 
     @Override
     public GenericResponse<?> getPage(String filter, UUID typeOfServiceId, int page, int size) {
+
         String normalizedFilter = normalizeFilter(filter);
 
         Page<CarsClass> entities = repository.findAllByFilter(
@@ -113,6 +69,7 @@ public class CarsClassServiceImpl implements CarsClassService {
 
     @Override
     public GenericResponse<?> getList(UUID typeOfServiceId, String filter) {
+        
         List<CarsClass> allByFilter = repository.findAllByFilter(filter, typeOfServiceId);
 
         List<CarsClassResponse> list = allByFilter.stream()
@@ -120,6 +77,52 @@ public class CarsClassServiceImpl implements CarsClassService {
                 .toList();
 
         return GenericResponse.success(Messages.SUCCESS, list);
+    }
+
+    @Override
+    public GenericResponse<?> create(CarsClassRequest request) {
+
+        TypeOfService typeOfService = typeOfServiceRepository.findById(request.getTypeOfServiceId())
+                .orElseThrow(() -> new CustomNotFoundException(Messages.TYPE_SERVICE_NOT_FOUND));
+
+        CarsClass entity = new CarsClass();
+        entity.setTypeOfService(typeOfService);
+        entity.setName(request.getName());
+        entity.setDescription(request.getDescription());
+        entity.setStartPrice(request.getStartPrice());
+        entity.setKmPrice(request.getKmPrice());
+        entity.setTwoKmPrice(request.getTwoKmPrice());
+        entity.setEveningPrice(request.getEveningPrice());
+        entity.setPaidWaitingTime(request.getPaidWaitingTime());
+        entity.setStatus(CarsCategoryStatusEnum.ACTIVE);
+
+        CarsClass saved = repository.save(entity);
+
+        return GenericResponse.success(Messages.SUCCESS, saved.getId());
+    }
+
+    @Override
+    public GenericResponse<?> edit(UUID id, CarsClassRequest request) {
+
+        CarsClass entity = repository.findById(id)
+                .orElseThrow(() -> new CustomNotFoundException(Messages.CARCLASS_NOT_FOUND));
+
+        TypeOfService typeOfService = typeOfServiceRepository.findById(request.getTypeOfServiceId())
+                .orElseThrow(() -> new CustomNotFoundException(Messages.TYPE_SERVICE_NOT_FOUND));
+
+        entity.setTypeOfService(typeOfService);
+        entity.setName(request.getName());
+        entity.setDescription(request.getDescription());
+        entity.setStartPrice(request.getStartPrice());
+        entity.setKmPrice(request.getKmPrice());
+        entity.setTwoKmPrice(request.getTwoKmPrice());
+        entity.setEveningPrice(request.getEveningPrice());
+        entity.setPaidWaitingTime(request.getPaidWaitingTime());
+        entity.setUpdatedAt(LocalDateTime.now());
+
+        CarsClass saved = repository.save(entity);
+
+        return GenericResponse.success(Messages.SUCCESS, saved.getId());
     }
 
     @Override

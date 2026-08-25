@@ -26,16 +26,6 @@ public class TypeOfServiceController {
 
     private final TypeOfServiceService service;
 
-    @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody TypeOfServiceRequest request) {
-        return ResponseEntity.ok(service.create(request));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable UUID id) {
-        return ResponseEntity.ok(service.get(id));
-    }
-
     @GetMapping
     public ResponseEntity<?> getPage(
             @RequestParam UUID regionId,
@@ -52,6 +42,16 @@ public class TypeOfServiceController {
             @RequestParam(required = false) String filter
     ) {
         return ResponseEntity.ok(service.getList(regionId, filter));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.get(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(@Valid @RequestBody TypeOfServiceRequest request) {
+        return ResponseEntity.ok(service.create(request));
     }
 
     @PutMapping("/{id}")
