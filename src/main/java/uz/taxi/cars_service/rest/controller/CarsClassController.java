@@ -26,16 +26,6 @@ public class CarsClassController {
 
     private final CarsClassService service;
 
-    @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody CarsClassRequest request) {
-        return ResponseEntity.ok(service.create(request));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable UUID id) {
-        return ResponseEntity.ok(service.get(id));
-    }
-
     @GetMapping
     public ResponseEntity<?> getPage(
             @RequestParam(required = false) String filter,
@@ -52,6 +42,16 @@ public class CarsClassController {
             @RequestParam(required = false) UUID typeOfServiceId
     ) {
         return ResponseEntity.ok(service.getList(typeOfServiceId, filter));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.get(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(@Valid @RequestBody CarsClassRequest request) {
+        return ResponseEntity.ok(service.create(request));
     }
 
     @PutMapping("/{id}")
