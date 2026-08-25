@@ -23,7 +23,9 @@ public class CarsClassRequest {
 
     private Double kmPrice;
 
-    private Double twoKmPrice;
+    private Double startKm;
+
+    private Double startKmPrice;
 
     private Double eveningPrice;
 

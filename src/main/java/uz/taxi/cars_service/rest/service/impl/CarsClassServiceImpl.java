@@ -91,7 +91,8 @@ public class CarsClassServiceImpl implements CarsClassService {
         entity.setDescription(request.getDescription());
         entity.setStartPrice(request.getStartPrice());
         entity.setKmPrice(request.getKmPrice());
-        entity.setTwoKmPrice(request.getTwoKmPrice());
+        entity.setStartKm(request.getStartKm());
+        entity.setStartKmPrice(request.getStartKmPrice());
         entity.setEveningPrice(request.getEveningPrice());
         entity.setPaidWaitingTime(request.getPaidWaitingTime());
         entity.setStatus(CarsCategoryStatusEnum.ACTIVE);
@@ -115,7 +116,8 @@ public class CarsClassServiceImpl implements CarsClassService {
         entity.setDescription(request.getDescription());
         entity.setStartPrice(request.getStartPrice());
         entity.setKmPrice(request.getKmPrice());
-        entity.setTwoKmPrice(request.getTwoKmPrice());
+        entity.setStartKm(request.getStartKm());
+        entity.setStartKmPrice(request.getStartKmPrice());
         entity.setEveningPrice(request.getEveningPrice());
         entity.setPaidWaitingTime(request.getPaidWaitingTime());
         entity.setUpdatedAt(LocalDateTime.now());
@@ -161,7 +163,8 @@ public class CarsClassServiceImpl implements CarsClassService {
         response.setDescription(entity.getDescription());
         response.setStartPrice(entity.getStartPrice());
         response.setKmPrice(entity.getKmPrice());
-        response.setTwoKmPrice(entity.getTwoKmPrice());
+        response.setStartKm(entity.getStartKm());
+        response.setStartKmPrice(entity.getStartKmPrice());
         response.setEveningPrice(entity.getEveningPrice());
         response.setPaidWaitingTime(entity.getPaidWaitingTime());
         response.setStatus(entity.getStatus().name());
