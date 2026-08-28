@@ -37,6 +37,8 @@ public class CarsResponse {
 
     private String status;
 
+    private Long carRedisId;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

@@ -1,13 +1,6 @@
 package uz.taxi.cars_service.entity;
 
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import uz.taxi.cars_service.base.BaseEntity;
@@ -61,4 +54,7 @@ public class Cars extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CarsStatusEnum status = CarsStatusEnum.UNCONFIRMED;
+
+    @Column(insertable = false, unique = true, updatable = false, name = "car_redis_id")
+    private Long carRedisId;
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uz.taxi.cars_service.base.BaseURL;
+import uz.taxi.cars_service.common.GenericResponse;
 import uz.taxi.cars_service.rest.payload.req.cars.BrantCarsRequest;
 import uz.taxi.cars_service.rest.payload.req.cars.CarsRequest;
 import uz.taxi.cars_service.rest.service.CarsService;
@@ -87,5 +88,24 @@ public class CarsController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id) {
         return ResponseEntity.ok(service.delete(id));
+    }
+
+    @PostMapping(BaseURL.START_SHIFT)
+    public GenericResponse<?> startShift() {
+        return service.startShift();
+    }
+
+    @PostMapping(BaseURL.END_SHIFT)
+    public GenericResponse<?> endShift() {
+        return service.endShift();
+    }
+
+    @PutMapping(BaseURL.LOCATION)
+    public GenericResponse<?> carLocationUpdate(
+            @RequestParam Long carId,
+            @RequestParam double lat,
+            @RequestParam double lon)
+    {
+        return service.carLocationUpdate(carId, lat, lon);
     }
 }

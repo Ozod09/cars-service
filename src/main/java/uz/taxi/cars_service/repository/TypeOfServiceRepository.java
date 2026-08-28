@@ -28,7 +28,7 @@ public interface TypeOfServiceRepository extends JpaRepository<TypeOfService, UU
 
     @Query("""
     SELECT t FROM TypeOfService t
-    WHERE t.regionId = :regionId
+    WHERE t.regionId = :regionId and t.status = 'ACTIVE'
       AND (
             (:filter IS NULL OR :filter = '')
          OR LOWER(t.name) LIKE LOWER(CONCAT('%', :filter, '%'))

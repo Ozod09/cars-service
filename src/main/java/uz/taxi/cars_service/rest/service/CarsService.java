@@ -25,4 +25,10 @@ public interface CarsService {
     GenericResponse<?> editBrentStatus(UUID id, String brentStatus);
 
     GenericResponse<?> delete(UUID id);
+
+    GenericResponse<?> startShift();
+
+    GenericResponse<?> endShift();
+
+    GenericResponse<?> carLocationUpdate(Long carId, double lat, double lon);
 }
