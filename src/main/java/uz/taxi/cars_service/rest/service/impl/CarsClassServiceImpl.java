@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import uz.taxi.cars_service.base.Messages;
+import uz.taxi.cars_service.base.Message;
 import uz.taxi.cars_service.common.GenericResponse;
 import uz.taxi.cars_service.entity.CarsClass;
 import uz.taxi.cars_service.entity.TypeOfService;
@@ -36,9 +36,9 @@ public class CarsClassServiceImpl implements CarsClassService {
     public GenericResponse<?> get(UUID id) {
 
         CarsClass entity = repository.findById(id)
-                .orElseThrow(() -> new CustomNotFoundException(Messages.TARIFF_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Message.TARIFF_NOT_FOUND));
 
-        return GenericResponse.success(Messages.SUCCESS, toResponse(entity));
+        return GenericResponse.success(Message.SUCCESS, toResponse(entity));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class CarsClassServiceImpl implements CarsClassService {
                 .totalElements(entities.getTotalElements())
                 .build();
 
-        return GenericResponse.success(Messages.SUCCESS, resPageable);
+        return GenericResponse.success(Message.SUCCESS, resPageable);
     }
 
     @Override
@@ -76,14 +76,14 @@ public class CarsClassServiceImpl implements CarsClassService {
                 .map(this::toResponse)
                 .toList();
 
-        return GenericResponse.success(Messages.SUCCESS, list);
+        return GenericResponse.success(Message.SUCCESS, list);
     }
 
     @Override
     public GenericResponse<?> create(CarsClassRequest request) {
 
         TypeOfService typeOfService = typeOfServiceRepository.findById(request.getTypeOfServiceId())
-                .orElseThrow(() -> new CustomNotFoundException(Messages.TYPE_SERVICE_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Message.TYPE_SERVICE_NOT_FOUND));
 
         CarsClass entity = new CarsClass();
         entity.setTypeOfService(typeOfService);
@@ -99,17 +99,17 @@ public class CarsClassServiceImpl implements CarsClassService {
 
         CarsClass saved = repository.save(entity);
 
-        return GenericResponse.success(Messages.SUCCESS, saved.getId());
+        return GenericResponse.success(Message.SUCCESS, saved.getId());
     }
 
     @Override
     public GenericResponse<?> edit(UUID id, CarsClassRequest request) {
 
         CarsClass entity = repository.findById(id)
-                .orElseThrow(() -> new CustomNotFoundException(Messages.CARCLASS_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Message.CARCLASS_NOT_FOUND));
 
         TypeOfService typeOfService = typeOfServiceRepository.findById(request.getTypeOfServiceId())
-                .orElseThrow(() -> new CustomNotFoundException(Messages.TYPE_SERVICE_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Message.TYPE_SERVICE_NOT_FOUND));
 
         entity.setTypeOfService(typeOfService);
         entity.setName(request.getName());
@@ -124,34 +124,34 @@ public class CarsClassServiceImpl implements CarsClassService {
 
         CarsClass saved = repository.save(entity);
 
-        return GenericResponse.success(Messages.SUCCESS, saved.getId());
+        return GenericResponse.success(Message.SUCCESS, saved.getId());
     }
 
     @Override
     public GenericResponse<?> editStatus(UUID id, String status) {
         CarsClass entity = repository.findById(id)
-                .orElseThrow(() -> new CustomNotFoundException(Messages.CARCLASS_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Message.CARCLASS_NOT_FOUND));
 
         try {
             CarsCategoryStatusEnum statusEnum = CarsCategoryStatusEnum.valueOf(status);
             entity.setStatus(statusEnum);
             repository.save(entity);
         } catch (IllegalArgumentException e) {
-            throw new BadRequestException("Invalid status value");
+            throw new BadRequestException(Message.INVALID_STATUS_VALUE);
         }
 
-        return GenericResponse.success(Messages.SUCCESS, entity.getId());
+        return GenericResponse.success(Message.SUCCESS, entity.getId());
     }
 
     @Override
     public GenericResponse<?> delete(UUID id) {
         CarsClass entity = repository.findById(id)
-                .orElseThrow(() -> new CustomNotFoundException(Messages.CARCLASS_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Message.CARCLASS_NOT_FOUND));
 
         entity.setStatus(CarsCategoryStatusEnum.DELETED);
         repository.save(entity);
 
-        return GenericResponse.success(Messages.DELETED_SUCCESSFULLY, null);
+        return GenericResponse.success(Message.DELETED_SUCCESSFULLY, null);
     }
 
     private CarsClassResponse toResponse(CarsClass entity) {

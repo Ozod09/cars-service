@@ -10,22 +10,11 @@ public interface BaseURL {
     String CLASS = "/class";
     String TYPEOFSERVICE = "/type-of-service";
     String LIST = "/list";
+    String LOCATION = "/location";
 
 
     String BYDRIVER = "/by-driver";
 
-    String LOGIN = "/login";
-
-    String CODE = "/code";
-    String SEND = "/send";
-    String RESEND = "/resend";
-    String VERIFY = "/verify";
-
-    String REFRESH_TOKEN = "/refresh-token";
-
-    String CHECK_PHONE = "/check-phone";
-
-    String CHECK_USER_PHONE = "/check-user-phone";
-    String UPDATE_PASSWORD = "/update-password";
-    String DELETE_ACCOUNT = "/delete/account";
+    String START_SHIFT = "/start-shift";
+    String END_SHIFT = "/end-shift";
 }

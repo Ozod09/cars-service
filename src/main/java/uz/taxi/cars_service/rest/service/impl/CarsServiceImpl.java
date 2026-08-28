@@ -6,18 +6,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import uz.taxi.cars_service.base.Messages;
+import uz.taxi.cars_service.base.Message;
 import uz.taxi.cars_service.common.GenericResponse;
 import uz.taxi.cars_service.entity.Cars;
 import uz.taxi.cars_service.enums.BrentStatusEnum;
 import uz.taxi.cars_service.enums.CarsStatusEnum;
 import uz.taxi.cars_service.exception.BadRequestException;
 import uz.taxi.cars_service.exception.CustomNotFoundException;
+import uz.taxi.cars_service.exception.UnauthorizedException;
 import uz.taxi.cars_service.repository.CarsRepository;
 import uz.taxi.cars_service.rest.payload.req.cars.BrantCarsRequest;
 import uz.taxi.cars_service.rest.payload.req.cars.CarsRequest;
 import uz.taxi.cars_service.rest.payload.res.ResPageable;
 import uz.taxi.cars_service.rest.payload.res.cars.CarsResponse;
+import uz.taxi.cars_service.rest.service.CarGeoService;
 import uz.taxi.cars_service.rest.service.CarsService;
 
 import java.time.LocalDateTime;
@@ -31,6 +33,59 @@ import java.util.UUID;
 public class CarsServiceImpl implements CarsService {
 
     private final CarsRepository repository;
+    private final CarGeoService carGeoService;
+
+    @Override
+    public GenericResponse<?> carLocationUpdate(Long carId, double lat, double lon) {
+
+        //        UUID driverId = GlobalVar.getUserId();
+        UUID driverId = UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6");
+        if (driverId == null) {
+            throw new UnauthorizedException(Message.AUTHENTICATION_REQUIRED);
+        }
+
+        if (carId == null || carId == 0) {
+            throw new BadRequestException(Message.CAR_REDIS_ID);
+        }
+
+        carGeoService.updateLocation(carId, lat, lon);
+
+        return GenericResponse.success(Message.SUCCESS, Message.SUCCESS);
+    }
+
+    @Override
+    public GenericResponse<?> startShift() {
+
+//        UUID driverId = GlobalVar.getUserId();
+        UUID driverId = UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66ada6");
+        if (driverId == null) {
+            throw new UnauthorizedException(Message.AUTHENTICATION_REQUIRED);
+        }
+
+        Cars car = repository.findByDriverId(driverId)
+                .orElseThrow(() -> new CustomNotFoundException(Message.CAR_NOT_FOUND));
+
+        carGeoService.startShift(car.getCarRedisId());
+
+        return GenericResponse.success(Message.SUCCESS, car.getCarRedisId());
+    }
+
+    @Override
+    public GenericResponse<?> endShift() {
+
+//        UUID driverId = GlobalVar.getUserId();
+        UUID driverId = UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6");
+        if (driverId == null) {
+            throw new UnauthorizedException(Message.AUTHENTICATION_REQUIRED);
+        }
+
+        Cars car = repository.findByDriverId(driverId)
+                .orElseThrow(() -> new CustomNotFoundException(Message.CAR_NOT_FOUND));
+
+        carGeoService.endShift(car.getCarRedisId());
+
+        return GenericResponse.success(Message.SUCCESS, Message.SUCCESS);
+    }
 
     @Override
     public GenericResponse<?> getPage(String filter, UUID driverId, int page, int size) {
@@ -55,13 +110,15 @@ public class CarsServiceImpl implements CarsService {
                 .totalElements(entities.getTotalElements())
                 .build();
 
-        return GenericResponse.success(Messages.SUCCESS, resPageable);
+        return GenericResponse.success(Message.SUCCESS, resPageable);
     }
 
     @Override
     public GenericResponse<?> create(CarsRequest request) {
+
         List<UUID> objects = request.getCarsServiceIds() != null
                 ? request.getCarsServiceIds() : new ArrayList<>();
+
         Cars entity = new Cars();
         entity.setDriverId(request.getDriverId());
         entity.setFirstName(request.getFirstName());
@@ -76,14 +133,14 @@ public class CarsServiceImpl implements CarsService {
 
         Cars saved = repository.save(entity);
 
-        return GenericResponse.success(Messages.SUCCESS, saved.getId());
+        return GenericResponse.success(Message.SUCCESS, saved.getId());
     }
 
     @Override
     public GenericResponse<?> edit(UUID id, CarsRequest request) {
 
         Cars entity = repository.findById(id)
-                .orElseThrow(() -> new CustomNotFoundException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Message.DATA_NOT_FOUND));
 
         entity.setDriverId(request.getDriverId());
         entity.setFirstName(request.getFirstName());
@@ -97,86 +154,86 @@ public class CarsServiceImpl implements CarsService {
 
         Cars saved = repository.save(entity);
 
-        return GenericResponse.success(Messages.SUCCESS, saved.getId());
+        return GenericResponse.success(Message.SUCCESS, saved.getId());
     }
 
     @Override
     public GenericResponse<?> editBrent(UUID id, BrantCarsRequest request) {
 
         Cars entity = repository.findById(id)
-                .orElseThrow(() -> new CustomNotFoundException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Message.DATA_NOT_FOUND));
 
         entity.setBrentStatus(BrentStatusEnum.UNCONFIRMED);
         entity.setBrentCarsTakePhotoPaths(request.getBrentCarsTakePhotoPaths());
 
         Cars saved = repository.save(entity);
 
-        return GenericResponse.success(Messages.SUCCESS, saved.getId());
+        return GenericResponse.success(Message.SUCCESS, saved.getId());
     }
 
     @Override
     public GenericResponse<?> get(UUID id) {
 
         Cars entity = repository.findById(id)
-                .orElseThrow(() -> new CustomNotFoundException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Message.DATA_NOT_FOUND));
 
-        return GenericResponse.success(Messages.SUCCESS, toResponse(entity));
+        return GenericResponse.success(Message.SUCCESS, toResponse(entity));
     }
 
     @Override
     public GenericResponse<?> getByDriverId(UUID driverId) {
 
         Cars entity = repository.findByDriverId(driverId)
-                .orElseThrow(() -> new CustomNotFoundException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Message.DATA_NOT_FOUND));
 
-        return GenericResponse.success(Messages.SUCCESS, toResponse(entity));
+        return GenericResponse.success(Message.SUCCESS, toResponse(entity));
     }
 
     @Override
     public GenericResponse<?> editStatus(UUID id, String status) {
 
         Cars entity = repository.findById(id)
-                .orElseThrow(() -> new CustomNotFoundException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Message.DATA_NOT_FOUND));
 
         try {
             CarsStatusEnum statusEnum = CarsStatusEnum.valueOf(status);
             entity.setStatus(statusEnum);
             repository.save(entity);
         } catch (IllegalArgumentException e) {
-            throw new BadRequestException("Invalid status value");
+            throw new BadRequestException(Message.INVALID_STATUS_VALUE);
         }
 
-        return GenericResponse.success(Messages.SUCCESS, entity.getId());
+        return GenericResponse.success(Message.SUCCESS, entity.getId());
     }
 
     @Override
     public GenericResponse<?> editBrentStatus(UUID id, String brentStatus) {
 
         Cars entity = repository.findById(id)
-                .orElseThrow(() -> new CustomNotFoundException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Message.DATA_NOT_FOUND));
 
         try {
             BrentStatusEnum brentStatusEnum = BrentStatusEnum.valueOf(brentStatus);
             entity.setBrentStatus(brentStatusEnum);
             repository.save(entity);
         } catch (IllegalArgumentException e) {
-            throw new BadRequestException("Invalid brent status value");
+            throw new BadRequestException(Message.INVALID_BRENT_STATUS);
         }
 
-        return GenericResponse.success(Messages.SUCCESS, entity.getId());
+        return GenericResponse.success(Message.SUCCESS, entity.getId());
     }
 
     @Override
     public GenericResponse<?> delete(UUID id) {
 
         Cars entity = repository.findById(id)
-                .orElseThrow(() -> new CustomNotFoundException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Message.DATA_NOT_FOUND));
 
         entity.setStatus(CarsStatusEnum.DELETED);
         entity.setUpdatedAt(LocalDateTime.now());
         repository.save(entity);
 
-        return GenericResponse.success(Messages.DELETED_SUCCESSFULLY, null);
+        return GenericResponse.success(Message.DELETED_SUCCESSFULLY, Message.DELETED_SUCCESSFULLY.getText());
     }
 
     private CarsResponse toResponse(Cars entity) {
@@ -195,6 +252,7 @@ public class CarsServiceImpl implements CarsService {
         response.setBrentStatus(entity.getBrentStatus().name());
         response.setBrentCarsTakePhotoPaths(entity.getBrentCarsTakePhotoPaths());
         response.setStatus(entity.getStatus().name());
+        response.setCarRedisId(entity.getCarRedisId());
         response.setCreatedAt(entity.getCreatedAt());
         response.setUpdatedAt(entity.getUpdatedAt());
         return response;

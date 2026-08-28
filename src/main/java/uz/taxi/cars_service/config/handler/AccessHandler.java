@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
+import uz.taxi.cars_service.base.Message;
 import uz.taxi.cars_service.common.GenericResponse;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class AccessHandler implements AccessDeniedHandler {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         OutputStream out = response.getOutputStream();
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(out, GenericResponse.error("FORBIDDEN"));
+        mapper.writeValue(out, GenericResponse.error(Message.FORBIDDEN));
         out.flush();
     }
 }

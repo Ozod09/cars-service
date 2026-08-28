@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import uz.taxi.cars_service.base.Message;
 import uz.taxi.cars_service.enums.ActionTypeEnum;
 
 
@@ -13,7 +14,7 @@ import uz.taxi.cars_service.enums.ActionTypeEnum;
 public class GenericResponse<T> {
 
     @JsonProperty("status")
-    private String status;
+    private Message status;
 
     @JsonProperty("message")
     private String message;
@@ -21,23 +22,23 @@ public class GenericResponse<T> {
     @JsonProperty("data")
     private T data;
 
-    public GenericResponse(String message, T data) {
-        this.status = ActionTypeEnum.SUCCESS.name();
-        this.message = message;
+    public GenericResponse(Message message, T data) {
+        this.status = Message.SUCCESS;
+        this.message = message.getText();
         this.data = data;
     }
 
-    public GenericResponse(String message) {
-        this.status = ActionTypeEnum.ERROR.name();
-        this.message = message;
+    public GenericResponse(Message message) {
+        this.status = message;
+        this.message = message.getText();
     }
 
-    public static <T> GenericResponse<T> success(String message, T data) {
+    public static <T> GenericResponse<T> success(Message message, T data) {
         return new GenericResponse<>(message, data);
     }
 
 
-    public static <T> GenericResponse<T> error(String message) {
+    public static <T> GenericResponse<T> error(Message message) {
         return new GenericResponse<>(message);
     }
 }

@@ -34,5 +34,4 @@ public class CarsRequest {
     private String texPassportPhotoPath;
 
     private List<UUID> carsServiceIds;
-
 }

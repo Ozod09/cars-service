@@ -30,6 +30,7 @@ public interface CarsClassRepository extends JpaRepository<CarsClass, UUID> {
         WHERE (:filter IS NULL OR :filter = ''
            OR LOWER(c.name) LIKE LOWER(CONCAT('%', :filter, '%')))
         AND (:typeOfServiceId IS NULL OR c.typeOfService.id = :typeOfServiceId)
+        and c.status = 'ACTIVE'
     """)
     List<CarsClass> findAllByFilter(@Param("filter") String filter,
                                     @Param("typeOfServiceId") UUID typeOfServiceId);

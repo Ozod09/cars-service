@@ -6,11 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import uz.taxi.cars_service.base.Messages;
+import uz.taxi.cars_service.base.Message;
 import uz.taxi.cars_service.common.GenericResponse;
 import uz.taxi.cars_service.entity.TypeOfService;
 import uz.taxi.cars_service.enums.CarsCategoryStatusEnum;
 import uz.taxi.cars_service.exception.BadRequestException;
+import uz.taxi.cars_service.exception.CustomNotFoundException;
 import uz.taxi.cars_service.repository.TypeOfServiceRepository;
 import uz.taxi.cars_service.rest.payload.req.typeOfService.TypeOfServiceRequest;
 import uz.taxi.cars_service.rest.payload.res.ResPageable;
@@ -28,45 +29,19 @@ public class TypeOfServiceServiceImpl implements TypeOfServiceService {
 
     private final TypeOfServiceRepository repository;
 
-    @Override
-    public GenericResponse<?> create(TypeOfServiceRequest request) {
-        TypeOfService entity = new TypeOfService();
-        entity.setName(request.getName());
-        entity.setDescription(request.getDescription());
-        entity.setAttachmentPath(request.getAttachmentPath());
-        entity.setRegionId(request.getRegionId());
-        entity.setStatus(CarsCategoryStatusEnum.ACTIVE);
-
-        TypeOfService saved = repository.save(entity);
-
-        return GenericResponse.success(Messages.SUCCESS, saved.getId());
-    }
-
-    @Override
-    public GenericResponse<?> edit(UUID id, TypeOfServiceRequest request) {
-        TypeOfService entity = repository.findById(id)
-                .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
-
-        entity.setName(request.getName());
-        entity.setDescription(request.getDescription());
-        entity.setAttachmentPath(request.getAttachmentPath());
-        entity.setUpdatedAt(LocalDateTime.now());
-
-        TypeOfService saved = repository.save(entity);
-
-        return GenericResponse.success(Messages.SUCCESS, saved.getId());
-    }
 
     @Override
     public GenericResponse<?> get(UUID id) {
-        TypeOfService entity = repository.findById(id)
-                .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
 
-        return GenericResponse.success(Messages.SUCCESS, toResponse(entity));
+        TypeOfService entity = repository.findById(id)
+                .orElseThrow(() -> new CustomNotFoundException(Message.DATA_NOT_FOUND));
+
+        return GenericResponse.success(Message.SUCCESS, toResponse(entity));
     }
 
     @Override
     public GenericResponse<?> getPage(UUID regionId, String filter, int page, int size) {
+
         String normalizedFilter = normalizeFilter(filter);
 
         Page<TypeOfService> entities = repository.findAllByFilter(
@@ -86,11 +61,12 @@ public class TypeOfServiceServiceImpl implements TypeOfServiceService {
                 .totalElements(entities.getTotalElements())
                 .build();
 
-        return GenericResponse.success(Messages.SUCCESS, resPageable);
+        return GenericResponse.success(Message.SUCCESS, resPageable);
     }
 
     @Override
     public GenericResponse<?> getList(UUID regionId, String filter) {
+
         List<TypeOfService> allByFilter = repository.findAllByFilter(regionId, filter);
 
         List<TypeOfServiceResponse> list = allByFilter.stream()
@@ -98,13 +74,46 @@ public class TypeOfServiceServiceImpl implements TypeOfServiceService {
                 .toList();
 
 
-        return GenericResponse.success(Messages.SUCCESS, list);
+        return GenericResponse.success(Message.SUCCESS, list);
+    }
+
+    @Override
+    public GenericResponse<?> create(TypeOfServiceRequest request) {
+
+        TypeOfService entity = new TypeOfService();
+        entity.setName(request.getName());
+        entity.setDescription(request.getDescription());
+//        entity.setAttachmentPath(request.getAttachmentPath());
+        entity.setRegionId(request.getRegionId());
+        entity.setStatus(CarsCategoryStatusEnum.ACTIVE);
+
+        TypeOfService saved = repository.save(entity);
+
+        return GenericResponse.success(Message.SUCCESS, saved.getId());
+    }
+
+    @Override
+    public GenericResponse<?> edit(UUID id, TypeOfServiceRequest request) {
+
+        TypeOfService entity = repository.findById(id)
+                .orElseThrow(() -> new CustomNotFoundException(Message.DATA_NOT_FOUND));
+
+        entity.setName(request.getName());
+        entity.setDescription(request.getDescription());
+        entity.setAttachmentPath(request.getAttachmentPath());
+        entity.setUpdatedAt(LocalDateTime.now());
+        entity.setRegionId(request.getRegionId());
+
+        repository.save(entity);
+
+        return GenericResponse.success(Message.SUCCESS, id);
     }
 
     @Override
     public GenericResponse<?> editStatus(UUID id, String status) {
+
         TypeOfService entity = repository.findById(id)
-                .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Message.DATA_NOT_FOUND));
 
         try {
             CarsCategoryStatusEnum statusEnum = CarsCategoryStatusEnum.valueOf(status);
@@ -112,25 +121,27 @@ public class TypeOfServiceServiceImpl implements TypeOfServiceService {
             entity.setUpdatedAt(LocalDateTime.now());
             repository.save(entity);
         } catch (IllegalArgumentException e) {
-            throw new BadRequestException("Invalid status value");
+            throw new BadRequestException(Message.INVALID_STATUS_VALUE);
         }
 
-        return GenericResponse.success(Messages.SUCCESS, entity.getId());
+        return GenericResponse.success(Message.SUCCESS, entity.getId());
     }
 
     @Override
     public GenericResponse<?> delete(UUID id) {
+
         TypeOfService entity = repository.findById(id)
-                .orElseThrow(() -> new BadRequestException(Messages.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomNotFoundException(Message.DATA_NOT_FOUND));
 
         entity.setStatus(CarsCategoryStatusEnum.DELETED);
         entity.setUpdatedAt(LocalDateTime.now());
         repository.save(entity);
 
-        return GenericResponse.success(Messages.DELETED_SUCCESSFULLY, null);
+        return GenericResponse.success(Message.DELETED_SUCCESSFULLY, null);
     }
 
     private TypeOfServiceResponse toResponse(TypeOfService entity) {
+
         TypeOfServiceResponse response = new TypeOfServiceResponse();
         response.setId(entity.getId());
         response.setName(entity.getName());

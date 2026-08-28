@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import uz.taxi.cars_service.base.HeaderKeys;
+import uz.taxi.cars_service.base.Message;
 import uz.taxi.cars_service.common.GenericResponse;
 import uz.taxi.cars_service.common.GlobalVar;
 import uz.taxi.cars_service.config.helper.ConfigUtils;
@@ -79,7 +80,7 @@ public class BeforeFilter extends OncePerRequestFilter {
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         OutputStream out = response.getOutputStream();
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(out, GenericResponse.error("Unknown error"));
+        mapper.writeValue(out, GenericResponse.error(Message.UNKNOWN_ERROR));
         out.flush();
     }
 }
